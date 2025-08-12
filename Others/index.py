@@ -1,15 +1,17 @@
+#OS for file operations
 import os
+# for moving files 
 import shutil
 import sys
 
-# File type categories
+# the file types we have
 file_type = {
     "Images": [".jpg", ".png", ".jpeg", ".gif"],
     "Documents": [".txt", ".pdf", ".docx"],
     "Videos": [".mp4", ".mkv"],
 }
 
-# Simulation mode check
+# for simulation check
 simulate = False
 if "--simulate" in sys.argv:
     simulate = True
@@ -17,21 +19,25 @@ if "--simulate" in sys.argv:
 else:
     print("Simulation mode OFF. Files will be moved.\n")
 
-# Ask user for folder path
+
+# Ask user to enter the folder path
 folder_path = input("Enter the folder path to organize: ").strip()
+
 
 # Validate folder path
 if not os.path.exists(folder_path):
-    print(f"❌ Error: Path '{folder_path}' does not exist.")
+    print(f"Error: Path '{folder_path}' does not exist.")
     sys.exit(1)
 elif not os.path.isdir(folder_path):
-    print(f"❌ Error: '{folder_path}' is not a folder.")
+    print(f"Error: '{folder_path}' is not a folder.")
     sys.exit(1)
+
 
 # Summary dictionary
 summary = {cat: 0 for cat in file_type.keys()}
 summary["Others"] = 0
 
+# Start file organization
 try:
     for file in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file)
@@ -67,7 +73,7 @@ try:
 
         # Count file in summary
         summary[category] += 1
-
+# exception handling
 except PermissionError:
     print(f"Error: Permission denied for accessing '{folder_path}'.")
     sys.exit(1)
